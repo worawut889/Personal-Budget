@@ -1,3 +1,5 @@
 # library and packages
 node_modules
 
+# http request
+request.http
