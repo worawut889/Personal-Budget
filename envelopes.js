@@ -6,7 +6,7 @@ const envelopes = [
   {
     id: 1,
     name: "clothing",
-    balances: 0,
+    balances: 9000,
     limits: 1000,
     spend: 0,
   },
@@ -48,7 +48,6 @@ const deleteEvelopeById = (id) => {
   const envelopeIndex = envelopes.findIndex(envel => envel.id === id)
   const deleteVal = envelopes.splice(envelopeIndex, 1)
   return deleteVal
-
 }
 
 const updateEnvelope = (id, obj) => {
@@ -61,14 +60,26 @@ const updateEnvelope = (id, obj) => {
     }
   })
   return envelopes[envelopeIndex]
+}
 
+const transfer = (fromName, toName, amount) => {
+  let from = findEnvelopeByName(fromName)[0]
+  let to = findEnvelopeByName(toName)[0]
+  if (from.balances < amount) {
+    throw new Error("Not enough balances.")
+  }
+  from.balances -= amount
+  to.balances += amount
+  updateEnvelope(from.id, {balances: from.balances})
+  updateEnvelope(to.id, {balances: to.balances})
+  return envelopes
 }
 
 module.exports = {
   findAllEnvelopes,
   findEnvelopeById,
-  findEnvelopeByName,
   addEnvelope,
   deleteEvelopeById,
-  updateEnvelope
+  updateEnvelope,
+  transfer
 }
