@@ -29,34 +29,48 @@ const findAllEnvelopes = () => {
 }
 
 // find one by id
-const findEnvelopesById = (id) => {
+const findEnvelopeById = (id) => {
   return envelopes.filter(envel => envel.id === id)
 }
 
 // find one by name
-const findEnvelopesByName = (name) => {
+const findEnvelopeByName = (name) => {
   return envelopes.filter(envel => envel.name === name)
 }
 
 // add envelopes
-const addEnvelopes = (name, balances, limits=1000) => {
+const addEnvelope = (name, balances, limits=1000) => {
   const obj = {id: countId++, name, balances, limits, spend: 0}
   envelopes.push(obj)
   return obj
 }
 
 // update envelopes
-const deleteEvelopesById = (id) => {
+const deleteEvelopeById = (id) => {
   const envelopeIndex = envelopes.findIndex(envel => envel.id === id)
   const deleteVal = envelopes.splice(envelopeIndex, 1)
   return deleteVal
 
 }
 
+const updateEnvelope = (id, obj) => {
+  const envelopeIndex = envelopes.findIndex(evel => evel.id === id)
+  const updateAllow = ["name", "balances", "limits"]
+  const objKey = Object.keys(obj)
+  objKey.forEach(key => {
+    if (updateAllow.includes(key)) {
+      envelopes[envelopeIndex][key] = obj[key]
+    }
+  })
+  return envelopes[envelopeIndex]
+
+}
+
 module.exports = {
   findAllEnvelopes,
-  findEnvelopesById,
-  findEnvelopesByName,
-  addEnvelopes,
-  deleteEvelopesById
+  findEnvelopeById,
+  findEnvelopeByName,
+  addEnvelope,
+  deleteEvelopeById,
+  updateEnvelope
 }

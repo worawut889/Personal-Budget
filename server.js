@@ -1,10 +1,11 @@
 const express = require("express");
 const {
   findAllEnvelopes,
-  findEnvelopesById,
-  findEnvelopesByName,
-  addEnvelopes,
-  deleteEvelopesById
+  findEnvelopeById,
+  findEnvelopeByName,
+  addEnvelope,
+  deleteEvelopeById,
+  updateEnvelope
 } = require("./envelopes");
 
 const app = express();
@@ -17,14 +18,25 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:id", (req, res) => {
-  const envelopes = findEnvelopesById(Number(req.params.id))
+  const envelopes = findEnvelopeById(Number(req.params.id))
   res.send(envelopes);
 });
 
 app.post("/", (req, res) => {
   const {name, balances} = req.body
-  const envelope = addEnvelopes(name, balances)
-  res.send(envelope)
+  const envelope = addEnvelope(name, balances)
+  res.status(201).send(envelope)
+})
+
+app.put("/:id", (req, res) => {
+  const body = req.body
+  const envelopeUpdate = updateEnvelope(Number(req.params.id), body)
+  res.status(201).send(envelopeUpdate)
+})
+
+app.delete("/:id", (req, res) => {
+  const envelope = deleteEvelopeById(Number(req.params.id))
+  res.status(204).send(envelope)
 })
 
 const PORT = process.env.PORT || 3000;
