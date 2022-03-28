@@ -1,5 +1,3 @@
-const { clearScreenDown } = require("readline");
-
 let totalBalances = 0;
 let revenue = []; // [{date: '22/3/2022', deposite: 50000}]
 let expenses = []; // [{category: 'clothing', withdraw: 300 }]
