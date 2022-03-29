@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors')
 const {
   findAllEnvelopes,
   findEnvelopeById,
@@ -10,7 +11,14 @@ const {
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
+
+app.param('id', (req, res, next, id) => {
+  const envelopeId = Number(id)
+  req.id = envelopeId
+  next()
+})
 
 app.get("/", (req, res) => {
   const envelopes = findAllEnvelopes();
@@ -18,7 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:id", (req, res) => {
-  const envelopes = findEnvelopeById(Number(req.params.id));
+  const envelopes = findEnvelopeById(req.id);
   res.send(envelopes);
 });
 
@@ -33,12 +41,12 @@ app.post("/", (req, res) => {
 
 app.put("/:id", (req, res) => {
   const body = req.body;
-  const envelopeUpdate = updateEnvelope(Number(req.params.id), body);
+  const envelopeUpdate = updateEnvelope(req.id, body);
   res.status(201).send(envelopeUpdate);
 });
 
 app.delete("/:id", (req, res) => {
-  const envelope = deleteEvelopeById(Number(req.params.id));
+  const envelope = deleteEvelopeById(req.id);
   res.status(204).send(envelope);
 });
 
